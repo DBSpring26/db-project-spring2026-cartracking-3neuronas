@@ -1,0 +1,25 @@
+
+services:
+  postgres:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cartracking-postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: car_tracking
+    ports:
+      - "5432:5432"
+
+  postgrest:
+    image: postgrest/postgrest:v12.2.3
+    container_name: cartracking-postgrest
+    depends_on:
+      - postgres
+    ports:
+      - "3000:3000"
+    environment:
+      PGRST_DB_URI: postgres://admin:root@postgres:5432/car_tracking
+      PGRST_DB_SCHEMAS: public
+      PGRST_DB_ANON_ROLE: web_anon
