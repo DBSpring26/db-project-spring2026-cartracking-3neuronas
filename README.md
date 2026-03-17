@@ -15,13 +15,17 @@ with the PostGIS extension enabled.
 
 ## Database credentials
 
-These are the local testing credentials used by Docker:
-
 -Hostname: dpg-d6rbqdkr85hc73a2ovng-a.virginia-postgres.render.com
+
 -Port: 5432
+
 -database: dbproject_y601
+
 -username: neurona1
+
 -password: YGS3uNZ247ukda0t9RLZ4AGrKYyjPOeq
+
+
 
 You can override them with environment variables:
 
