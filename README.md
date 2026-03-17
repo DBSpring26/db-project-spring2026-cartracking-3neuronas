@@ -57,8 +57,7 @@ python pipeline.py --project-data ./project_data
 
 ## Notes
 
-- The schema follows the table diagram supplied for the project.
-- All geometries are loaded with SRID 4326.
-- The ETL validates the exact column order before loading the data.
-- For the final submission, the production database must be hosted in Render,
-  as required by the project instructions.
+- The relational schema strictly follows the table diagram provided in the project handout.
+- All geometries are stored with SRID 4326, as requested in the assignment.
+- The ETL process validates the exact column order of each CSV before loading it into the database.
+- For this final submission, the production database is deployed on Render, in accordance with the project requirements.
