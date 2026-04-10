@@ -1,6 +1,5 @@
 # Car Tracking API — Phase II
-**CIIC 4060/ICOM 5016 – Introduction to Database Systems, Spring 2026**  
-**University of Puerto Rico, Mayagüez Campus**  
+**ICOM 5016 – Spring 2026**  
 **Team: 3 Neuronas**
 
 ## Team Members & Contributions
@@ -12,10 +11,10 @@
 | Christian Perez | DAO Layer | `dao/`
 
 ## Database Credentials (Render)
-- **Host:** `<render-db-host>`
-- **Database:** `<db-name>`
-- **User:** `<user>`
-- **Password:** `<password>`
+- **Host:** `dpg-d6rbqdkr85hc73a2ovng-a.virginia-postgres.render.com`
+- **Database:** `dbproject_y601`
+- **User:** `neurona1`
+- **Password:** `YGS3uNZ247ukda0t9RLZ4AGrKYyjPOeq`
 - **Port:** `5432`
 
 ## API Base URL
