@@ -19,11 +19,11 @@
 - **Port:** `5432`
 
 ## API Base URL
-https://<your-app>.onrender.com
+https://db-project-spring2026-cartracking-0cax.onrender.com
 
 ## API Documentation
 Interactive Swagger docs available at:
-https://<your-app>.onrender.com/docs
+https://db-project-spring2026-cartracking-0cax.onrender.com/docs
 
 ## Base Path
 All endpoints are prefixed with `/api/v1`
