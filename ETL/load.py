@@ -101,14 +101,14 @@ def create_tables(conn) -> None:
         cur.execute(
             """
             CREATE TABLE IF NOT EXISTS vehicle (
-                vehicle_id BIGINT PRIMARY KEY,
+                vehicle_id BIGSERIAL PRIMARY KEY,
                 vehicle_type_id BIGINT REFERENCES vehicle_type(id),
                 vehicle_status_id INTEGER REFERENCES vehicle_status(vehicle_status_id),
-                plate_number TEXT,
+                plate_number TEXT UNIQUE,
                 make TEXT,
                 model TEXT,
                 year INTEGER,
-                created_at TIMESTAMP
+                created_at TIMESTAMP DEFAULT NOW()
             );
             """
         )
@@ -116,13 +116,14 @@ def create_tables(conn) -> None:
         cur.execute(
             """
             CREATE TABLE IF NOT EXISTS trip (
-                trip_id BIGINT PRIMARY KEY,
+                trip_id BIGSERIAL PRIMARY KEY,
                 vehicle_id BIGINT REFERENCES vehicle(vehicle_id),
                 start_ts TIMESTAMP,
                 end_ts TIMESTAMP,
                 start_geom geometry(Point,4326),
                 end_geom geometry(Point,4326),
-                distance_km NUMERIC(12,3)
+                distance_km NUMERIC(12,3),
+                created_at TIMESTAMP DEFAULT NOW()
             );
             """
         )
@@ -130,11 +131,11 @@ def create_tables(conn) -> None:
         cur.execute(
             """
             CREATE TABLE IF NOT EXISTS parking_area (
-                parking_area_id BIGINT PRIMARY KEY,
+                parking_area_id BIGSERIAL PRIMARY KEY,
                 name TEXT,
                 capacity INTEGER,
                 geom geometry(Polygon,4326),
-                created_at TIMESTAMP
+                created_at TIMESTAMP DEFAULT NOW()
             );
             """
         )
@@ -142,11 +143,11 @@ def create_tables(conn) -> None:
         cur.execute(
             """
             CREATE TABLE IF NOT EXISTS road_segment (
-                road_id BIGINT PRIMARY KEY,
+                road_id BIGSERIAL PRIMARY KEY,
                 name TEXT,
                 speed_limit_kph INTEGER,
                 geom geometry(LineString,4326),
-                created_at TIMESTAMP,
+                created_at TIMESTAMP DEFAULT NOW(),
                 is_oneway BOOLEAN,
                 direction TEXT
             );
@@ -156,7 +157,7 @@ def create_tables(conn) -> None:
         cur.execute(
             """
             CREATE TABLE IF NOT EXISTS location_ping (
-                ping_id BIGINT PRIMARY KEY,
+                ping_id BIGSERIAL PRIMARY KEY,
                 vehicle_id BIGINT REFERENCES vehicle(vehicle_id),
                 ts TIMESTAMP,
                 geom geometry(Point,4326),
@@ -253,7 +254,9 @@ def load_table(conn, table: str, df: pd.DataFrame, page_size: int = 1000) -> Non
     for column in columns:
         insert_columns.append(sql.Identifier(column))
         if column in geometry_columns:
-            value_sql_parts.append(sql.SQL("ST_GeomFromWKB(decode(%s, 'hex'), 4326)"))
+            value_sql_parts.append(
+                sql.SQL("ST_SetSRID(ST_GeomFromEWKB(decode(%s, 'hex')), 4326)")
+            )
         else:
             value_sql_parts.append(sql.SQL("%s"))
 
@@ -289,5 +292,21 @@ def load_all(data: dict[str, pd.DataFrame]) -> None:
                 raise KeyError(f"Missing dataframe for required table: {table}")
             load_table(conn, table, data[table])
             print(f"Loaded {len(data[table])} rows into {table}.")
+
+        # Synchronize sequences after bulk loading explicit IDs into BIGSERIAL columns
+        with conn.cursor() as cur:
+            for table, col in [
+                ("vehicle", "vehicle_id"),
+                ("trip", "trip_id"),
+                ("parking_area", "parking_area_id"),
+                ("road_segment", "road_id"),
+                ("location_ping", "ping_id"),
+            ]:
+                cur.execute(
+                    f"SELECT setval(pg_get_serial_sequence('{table}', '{col}'), "
+                    f"COALESCE((SELECT MAX({col}) FROM {table}), 1));"
+                )
+        conn.commit()
+        print("Sequences synchronized.")
     finally:
         conn.close()

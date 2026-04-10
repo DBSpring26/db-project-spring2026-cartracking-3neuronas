@@ -1,63 +1,87 @@
-# Car Tracking - Phase I (Database + ETL)
+# Car Tracking API — Phase II
+**CIIC 4060/ICOM 5016 – Introduction to Database Systems, Spring 2026**  
+**University of Puerto Rico, Mayagüez Campus**  
+**Team: 3 Neuronas**
 
-This repository contains the ETL pipeline for the Car Tracking Phase I deliverable.
-The pipeline reads the provided Parquet datasets and loads them into PostgreSQL 17
-with the PostGIS extension enabled.
+## Team Members & Contributions
 
-## Project structure
+| Member | Role | Responsibility |
+|--------|------|---------------|
+| Jorge Burgos | Routing Layer | `main.py` `load.py`
+| Roberto Galarza | Handler Layer | `handler/`
+| Christian Perez | DAO Layer | `dao/`
 
-- `extract.py`: reads all required Parquet files.
-- `transform.py`: validates that each dataset matches the required schema.
-- `load.py`: creates the database schema and loads all records.
-- `pipeline.py`: runs the complete ETL process.
-- `dbconfig.py`: database connection settings.
-- `docker-compose.yml` and `Dockerfile`: local test environment using PostgreSQL 17 + PostGIS.
+## Database Credentials (Render)
+- **Host:** `<render-db-host>`
+- **Database:** `<db-name>`
+- **User:** `<user>`
+- **Password:** `<password>`
+- **Port:** `5432`
 
-## Database credentials
+## API Base URL
+https://<your-app>.onrender.com
 
--Hostname: dpg-d6rbqdkr85hc73a2ovng-a.virginia-postgres.render.com
+## API Documentation
+Interactive Swagger docs available at:
+https://<your-app>.onrender.com/docs
 
--Port: 5432
+## Base Path
+All endpoints are prefixed with `/api/v1`
 
--database: dbproject_y601
+## Endpoints Summary
 
--username: neurona1
+### Vehicles
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/v1/vehicles` | Create a vehicle |
+| GET | `/api/v1/vehicles` | List vehicles (paginated, filterable) |
+| GET | `/api/v1/vehicles/{vehicle_id}` | Get vehicle by ID |
+| PUT | `/api/v1/vehicles/{vehicle_id}` | Update vehicle (partial or full) |
+| DELETE | `/api/v1/vehicles/{vehicle_id}` | Delete vehicle |
+| GET | `/api/v1/vehicles/{vehicle_id}/current-location` | Get most recent location |
+| GET | `/api/v1/vehicles/{vehicle_id}/pings` | Get pings for a vehicle |
+| GET | `/api/v1/vehicles/{vehicle_id}/trips` | Get trips for a vehicle |
 
--password: YGS3uNZ247ukda0t9RLZ4AGrKYyjPOeq
+### Road Segments
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/v1/road-segments` | Create a road segment |
+| GET | `/api/v1/road-segments` | List road segments (filterable by name, speed, bbox) |
+| GET | `/api/v1/road-segments/{road_id}` | Get road segment by ID |
+| PUT | `/api/v1/road-segments/{road_id}` | Update road segment |
+| DELETE | `/api/v1/road-segments/{road_id}` | Delete road segment |
 
+### Parking Areas
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/v1/parking-areas` | Create a parking area |
+| GET | `/api/v1/parking-areas` | List parking areas (filterable by name, bbox) |
+| GET | `/api/v1/parking-areas/{parking_area_id}` | Get parking area by ID |
+| PUT | `/api/v1/parking-areas/{parking_area_id}` | Update parking area |
+| DELETE | `/api/v1/parking-areas/{parking_area_id}` | Delete parking area |
 
+### Location Pings
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/v1/location-pings` | Create a location ping |
+| GET | `/api/v1/location-pings` | List pings (filterable by vehicle, time range, bbox) |
+| GET | `/api/v1/location-pings/{ping_id}` | Get ping by ID |
+| PUT | `/api/v1/location-pings/{ping_id}` | Update ping |
+| DELETE | `/api/v1/location-pings/{ping_id}` | Delete ping |
 
-You can override them with environment variables:
+### Trips
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/v1/trips` | Create a trip |
+| GET | `/api/v1/trips` | List trips (filterable by vehicle, time range) |
+| GET | `/api/v1/trips/{trip_id}` | Get trip by ID |
+| PUT | `/api/v1/trips/{trip_id}` | Update trip |
+| DELETE | `/api/v1/trips/{trip_id}` | Delete trip |
 
-- `DB_HOST`
-- `DB_PORT`
-- `DB_NAME`
-- `DB_USER`
-- `DB_PASSWORD`
-
-## Local setup
-
-Start PostgreSQL/PostGIS:
-
-```bash
-docker-compose up -d
-```
-
-Install Python dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-Run the ETL pipeline:
-
-```bash
-python pipeline.py --project-data ./project_data
-```
-
-## Notes
-
-- The relational schema strictly follows the table diagram provided in the project handout.
-- All geometries are stored with SRID 4326, as requested in the assignment.
-- The ETL process validates the exact column order of each CSV before loading it into the database.
-- For this final submission, the production database is deployed on Render, in accordance with the project requirements.
+## Technical Stack
+- **Framework:** FastAPI
+- **Database:** PostgreSQL 17 + PostGIS
+- **Driver:** psycopg2
+- **Hosting:** Render
+- **Architecture:** Handler/DAO pattern (MVC)
+- **Geometry:** GeoJSON (Point, LineString, Polygon) — SRID 4326
