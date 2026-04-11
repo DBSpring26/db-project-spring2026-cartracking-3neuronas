@@ -4,6 +4,12 @@ Car Tracking API — FastAPI entry (CIIC 4060 / ICOM 5016, Spring 2026, UPRM).
 Thin endpoints: instantiate handlers, delegate business logic and HTTPException to handler layer.
 """
 
+import os
+import sys
+
+# Add the current directory's parent to sys.path to allow imports from sibling modules
+sys.path.insert(0, os.path.dirname(__file__))
+
 from __future__ import annotations
 
 from typing import Literal, Optional
