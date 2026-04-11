@@ -5,7 +5,7 @@ from typing import Optional
 import psycopg2
 from fastapi import HTTPException
 
-from dao.road_segment_dao import RoadSegmentDAO, RoadSegmentCreate, RoadSegmentUpdate
+from ..dao.road_segment_dao import RoadSegmentDAO, RoadSegmentCreate, RoadSegmentUpdate
 
 
 def _parse_bbox(bbox: Optional[str]) -> Optional[tuple[float, float, float, float]]:

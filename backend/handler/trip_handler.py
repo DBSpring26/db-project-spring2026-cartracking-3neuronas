@@ -6,7 +6,7 @@ from typing import Optional
 import psycopg2
 from fastapi import HTTPException
 
-from dao.trip_dao import TripDAO, TripCreate, TripUpdate
+from ..dao.trip_dao import TripDAO, TripCreate, TripUpdate
 
 
 def _parse_ts(value: Optional[str]) -> Optional[datetime]:

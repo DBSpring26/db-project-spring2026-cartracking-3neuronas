@@ -6,7 +6,7 @@ from typing import Optional
 import psycopg2
 from fastapi import HTTPException
 
-from dao.vehicle_dao import VehicleDAO, VehicleCreate, VehicleUpdate
+from ..dao.vehicle_dao import VehicleDAO, VehicleCreate, VehicleUpdate
 
 
 def _parse_ts(value: Optional[str]) -> Optional[datetime]:

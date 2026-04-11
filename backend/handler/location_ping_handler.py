@@ -6,7 +6,7 @@ from typing import Optional
 import psycopg2
 from fastapi import HTTPException
 
-from dao.location_ping_dao import (
+from ..dao.location_ping_dao import (
     LocationPingDAO,
     LocationPingCreate,
     LocationPingUpdate,
