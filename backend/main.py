@@ -6,12 +6,6 @@ Thin endpoints: instantiate handlers, delegate business logic and HTTPException 
 
 from __future__ import annotations
 
-import os
-import sys
-
-# Add the project root to sys.path to allow imports from sibling modules
-sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
-
 from typing import Literal, Optional
 
 from fastapi import FastAPI, HTTPException, Request
@@ -20,11 +14,11 @@ from fastapi.responses import JSONResponse
 from fastapi.responses import Response
 from pydantic import BaseModel, ConfigDict, Field
 
-from handler.location_ping_handler import LocationPingHandler
-from handler.parking_area_handler import ParkingAreaHandler
-from handler.road_segment_handler import RoadSegmentHandler
-from handler.trip_handler import TripHandler
-from handler.vehicle_handler import VehicleHandler
+from .handler.location_ping_handler import LocationPingHandler
+from .handler.parking_area_handler import ParkingAreaHandler
+from .handler.road_segment_handler import RoadSegmentHandler
+from .handler.trip_handler import TripHandler
+from .handler.vehicle_handler import VehicleHandler
 
 # ---------------------------------------------------------------------------
 # Pydantic request models (GeoJSON SRID 4326; coordinates [lon, lat])
