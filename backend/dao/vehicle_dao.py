@@ -104,9 +104,8 @@ class VehicleDAO:
             cursor.execute(
                 f"""
                 SELECT
-                    v.vehicle_id, v.vehicle_type_id, v.vehicle_status_id,
-                    v.plate_number, v.make, v.model, v.year, v.created_at,
-                    vs.name AS status
+                    v.vehicle_id, v.plate_number, v.make, v.model, v.year,
+                    v.vehicle_type_id, v.vehicle_status_id, v.created_at
                 FROM vehicle v
                 JOIN vehicle_status vs ON vs.vehicle_status_id = v.vehicle_status_id
                 {where_sql}
@@ -319,7 +318,7 @@ class VehicleDAO:
             cursor.execute(
                 f"""
                 SELECT
-                    ping_id, vehicle_id, ts,
+                    ping_id, ts,
                     ST_AsGeoJSON(geom)::json AS geom,
                     speed_kph, heading_deg
                 FROM location_ping

@@ -109,9 +109,7 @@ class LocationPingDAO:
             cursor.execute(
                 f"""
                 SELECT
-                    ping_id, vehicle_id, ts,
-                    ST_AsGeoJSON(geom)::json AS geom,
-                    speed_kph, heading_deg
+                    ping_id, vehicle_id, ts, speed_kph, heading_deg
                 FROM location_ping
                 {where_sql}
                 ORDER BY ts DESC
