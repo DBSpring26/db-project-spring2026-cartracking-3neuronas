@@ -138,7 +138,7 @@ class RoadSegmentDAO:
             cursor.execute(
                 """
                 SELECT
-                    road_id, name, speed_limit_kph, is_oneway, direction,
+                    road_id, name, speed_limit_kph,
                     ST_AsGeoJSON(geom)::json AS geom, created_at
                 FROM road_segment
                 WHERE road_id = %s
@@ -180,7 +180,7 @@ class RoadSegmentDAO:
                 SET {", ".join(set_parts)}
                 WHERE road_id = %s
                 RETURNING
-                    road_id, name, speed_limit_kph, is_oneway, direction,
+                    road_id, name, speed_limit_kph,
                     ST_AsGeoJSON(geom)::json AS geom, created_at
                 """,
                 (*params, road_id),

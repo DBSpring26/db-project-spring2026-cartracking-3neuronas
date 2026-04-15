@@ -142,12 +142,10 @@ class VehicleDAO:
             cursor.execute(
                 """
                 SELECT
-                    v.vehicle_id, v.vehicle_type_id, v.vehicle_status_id,
-                    v.plate_number, v.make, v.model, v.year, v.created_at,
-                    vs.name AS status
-                FROM vehicle v
-                JOIN vehicle_status vs ON vs.vehicle_status_id = v.vehicle_status_id
-                WHERE v.vehicle_id = %s
+                    vehicle_id, vehicle_type_id, vehicle_status_id,
+                    plate_number, make, model, year, created_at
+                FROM vehicle
+                WHERE vehicle_id = %s
                 """,
                 (vehicle_id,),
             )
@@ -379,7 +377,7 @@ class VehicleDAO:
 
             cursor.execute(
                 f"""
-                SELECT trip_id, vehicle_id, start_ts, end_ts, distance_km
+                SELECT trip_id, start_ts, end_ts, distance_km
                 FROM trip
                 {where_sql}
                 ORDER BY start_ts DESC
