@@ -7,8 +7,8 @@
 | Member | Role | Responsibility |
 |--------|------|---------------|
 | Jorge Burgos | Routing Layer | `main.py` `load.py`
-| Roberto Galarza | Handler Layer | `handler/`
-| Christian Perez | DAO Layer | `dao/`
+| Roberto Galarza | DAO Layer | `dao/` `collection`
+| Christian Perez | Handler Layer | `handler/`
 
 ## Database Credentials (Render)
 - **Host:** `dpg-d6rbqdkr85hc73a2ovng-a.virginia-postgres.render.com`
