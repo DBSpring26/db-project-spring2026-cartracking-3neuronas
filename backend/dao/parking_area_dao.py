@@ -36,16 +36,15 @@ class ParkingAreaDAO:
         try:
             cursor.execute(
                 """
-                INSERT INTO parking_area (name, capacity, geom)
+                INSERT INTO parking_area (name, capacity, geom, created_at)
                 VALUES (
                     %s,
                     %s,
-                    ST_SetSRID(ST_GeomFromGeoJSON(%s), 4326)
+                    ST_SetSRID(ST_GeomFromGeoJSON(%s), 4326),
+                    NOW()
                 )
-                RETURNING
-                    parking_area_id, name, capacity,
-                    ST_AsGeoJSON(geom)::json AS geom,
-                    created_at
+                RETURNING parking_area_id, name, capacity,
+                    ST_AsGeoJSON(geom)::json AS geom, created_at
                 """,
                 (data.name, data.capacity, psycopg2.extras.Json(data.geom)),
             )
