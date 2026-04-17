@@ -1,0 +1,869 @@
+{
+  "info": {
+    "_postman_id": "56957fdf-7294-4cbc-a95f-6a7c95af6afb",
+    "name": "cartracking-api",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "49927548"
+  },
+  "item": [
+    {
+      "name": "Vehicles",
+      "item": [
+        {
+          "name": "GET /api/v1/vehicles/{vehicle_id}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://db-project-spring2026-cartracking-0cax.onrender.com/api/v1/vehicles/{{vehicle_id}}",
+              "protocol": "https",
+              "host": [
+                "db-project-spring2026-cartracking-0cax",
+                "onrender",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "vehicles",
+                "{{vehicle_id}}"
+              ]
+            },
+            "description": "Generated from cURL: curl --request GET --url 'https://db-project-spring2026-cartracking-0cax.onrender.com/api/v1/vehicles/{{vehicle_id}}'"
+          },
+          "response": []
+        },
+        {
+          "name": "PUT /api/v1/vehicles/{vehicle_id}",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"vehicle_type_id\": 3,\n  \"vehicle_status_id\": 1,\n  \"year\": 2024\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://db-project-spring2026-cartracking-0cax.onrender.com/api/v1/vehicles/{{vehicle_id}}",
+              "protocol": "https",
+              "host": [
+                "db-project-spring2026-cartracking-0cax",
+                "onrender",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "vehicles",
+                "{{vehicle_id}}"
+              ]
+            },
+            "description": "Generated from cURL: curl --request PUT --url 'https://db-project-spring2026-cartracking-0cax.onrender.com/api/v1/vehicles/{{vehicle_id}}' --header 'Content-Type: application/json' --data '{\n  \"vehicle_type_id\": 3,\n  \"vehicle_status_id\": 1,\n  \"plate_number\": \"ABC-123\",\n  \"make\": \"Toyota\",\n  \"model\": \"Hilux\",\n  \"year\": 2024\n}'"
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE /api/v1/vehicles/{vehicle_id}",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "https://db-project-spring2026-cartracking-0cax.onrender.com/api/v1/vehicles/{{vehicle_id}}",
+              "protocol": "https",
+              "host": [
+                "db-project-spring2026-cartracking-0cax",
+                "onrender",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "vehicles",
+                "{{vehicle_id}}"
+              ]
+            },
+            "description": "Generated from cURL: curl --request DELETE --url 'https://db-project-spring2026-cartracking-0cax.onrender.com/api/v1/vehicles/{{vehicle_id}}'"
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/vehicles/{vehicle_id}/current-location",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://db-project-spring2026-cartracking-0cax.onrender.com/api/v1/vehicles/{{vehicle_id}}/current-location",
+              "protocol": "https",
+              "host": [
+                "db-project-spring2026-cartracking-0cax",
+                "onrender",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "vehicles",
+                "{{vehicle_id}}",
+                "current-location"
+              ]
+            },
+            "description": "Generated from cURL: curl --request GET --url 'https://db-project-spring2026-cartracking-0cax.onrender.com/api/v1/vehicles/{{vehicle_id}}/current-location'"
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/vehicles/{vehicle_id}/pings",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://db-project-spring2026-cartracking-0cax.onrender.com/api/v1/vehicles/{{vehicle_id}}/pings",
+              "protocol": "https",
+              "host": [
+                "db-project-spring2026-cartracking-0cax",
+                "onrender",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "vehicles",
+                "{{vehicle_id}}",
+                "pings"
+              ]
+            },
+            "description": "Generated from cURL: curl --request GET --url 'https://db-project-spring2026-cartracking-0cax.onrender.com/api/v1/vehicles/{{vehicle_id}}/pings'"
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/vehicles/{vehicle_id}/trips",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://db-project-spring2026-cartracking-0cax.onrender.com/api/v1/vehicles/{{vehicle_id}}/trips",
+              "protocol": "https",
+              "host": [
+                "db-project-spring2026-cartracking-0cax",
+                "onrender",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "vehicles",
+                "{{vehicle_id}}",
+                "trips"
+              ]
+            },
+            "description": "Generated from cURL: curl --request GET --url 'https://db-project-spring2026-cartracking-0cax.onrender.com/api/v1/vehicles/{{vehicle_id}}/trips'"
+          },
+          "response": []
+        },
+        {
+          "name": "POST /api/v1/vehicles",
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {}
+          },
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"vehicle_type_id\": 3,\n  \"vehicle_status_id\": 1,\n  \"plate_number\": \"KIA-6789\",\n  \"make\": \"Toyota\",\n  \"model\": \"Hilux\",\n  \"year\": 2024\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://db-project-spring2026-cartracking-0cax.onrender.com/api/v1/vehicles",
+              "protocol": "https",
+              "host": [
+                "db-project-spring2026-cartracking-0cax",
+                "onrender",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "vehicles"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/vehicles",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://db-project-spring2026-cartracking-0cax.onrender.com/api/v1/vehicles",
+              "protocol": "https",
+              "host": [
+                "db-project-spring2026-cartracking-0cax",
+                "onrender",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "vehicles"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Road Segments",
+      "item": [
+        {
+          "name": "GET /api/v1/road-segments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://db-project-spring2026-cartracking-0cax.onrender.com/api/v1/road-segments",
+              "protocol": "https",
+              "host": [
+                "db-project-spring2026-cartracking-0cax",
+                "onrender",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "road-segments"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/road-segments/{road_id}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://db-project-spring2026-cartracking-0cax.onrender.com/api/v1/road-segments/{{road_id}}",
+              "protocol": "https",
+              "host": [
+                "db-project-spring2026-cartracking-0cax",
+                "onrender",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "road-segments",
+                "{{road_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE /api/v1/road-segments/{road_id}",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "https://db-project-spring2026-cartracking-0cax.onrender.com/api/v1/road-segments/{{road_id}}",
+              "protocol": "https",
+              "host": [
+                "db-project-spring2026-cartracking-0cax",
+                "onrender",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "road-segments",
+                "{{road_id}}"
+              ]
+            },
+            "description": "Generated from cURL: curl --request DELETE --url 'https://db-project-spring2026-cartracking-0cax.onrender.com/api/v1/road-segments/{{road_id}}'"
+          },
+          "response": []
+        },
+        {
+          "name": "POST /api/v1/road-segments",
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "content-length": true,
+              "content-type": true
+            }
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Length",
+                "value": "<calculated when request is sent>",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"PR-2 Segment A\",\n  \"speed_limit_kph\": 60,\n  \"is_oneway\": true,\n  \"direction\": \"forward\",\n  \"geom\": {\n    \"type\": \"LineString\",\n    \"coordinates\": [[-67.1601, 18.211], [-67.1588, 18.2101],[-67.1573, 18.2092]]\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://db-project-spring2026-cartracking-0cax.onrender.com/api/v1/road-segments",
+              "protocol": "https",
+              "host": [
+                "db-project-spring2026-cartracking-0cax",
+                "onrender",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "road-segments"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT /api/v1/road-segments/{road_id}",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"speed_limit_kph\": 80\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://db-project-spring2026-cartracking-0cax.onrender.com/api/v1/road-segments/{{road_id}}",
+              "protocol": "https",
+              "host": [
+                "db-project-spring2026-cartracking-0cax",
+                "onrender",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "road-segments",
+                "{{road_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Parking Areas",
+      "item": [
+        {
+          "name": "POST /api/v1/parking-areas",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"UPRM West Lot\",\n  \"capacity\": 120,\n  \"geometry\": {\n    \"type\": \"Polygon\",\n    \"coordinates\": [[[-67.141,18.2105],[-67.1402,18.2105],[-67.1402,18.2098],[-67.141,18.2098],[-67.141,18.2105]]]\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://db-project-spring2026-cartracking-0cax.onrender.com/api/v1/parking-areas",
+              "protocol": "https",
+              "host": [
+                "db-project-spring2026-cartracking-0cax",
+                "onrender",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "parking-areas"
+              ]
+            },
+            "description": "Create a parking area"
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/parking-areas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://db-project-spring2026-cartracking-0cax.onrender.com/api/v1/parking-areas",
+              "protocol": "https",
+              "host": [
+                "db-project-spring2026-cartracking-0cax",
+                "onrender",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "parking-areas"
+              ]
+            },
+            "description": "List parking areas"
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/parking-areas/{parking_area_id}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://db-project-spring2026-cartracking-0cax.onrender.com/api/v1/parking-areas/{{parking_area_id}}",
+              "protocol": "https",
+              "host": [
+                "db-project-spring2026-cartracking-0cax",
+                "onrender",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "parking-areas",
+                "{{parking_area_id}}"
+              ]
+            },
+            "description": "Get parking area by id"
+          },
+          "response": []
+        },
+        {
+          "name": "PUT /api/v1/parking-areas/{parking_area_id}",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Central Parking\",\n  \"capacity\": 120,\n  \"geometry\": {\n    \"type\": \"Polygon\",\n    \"coordinates\": [[[-66.1057,18.4655],[-66.1051,18.4655],[-66.1051,18.4661],[-66.1057,18.4661],[-66.1057,18.4655]]]\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://db-project-spring2026-cartracking-0cax.onrender.com/api/v1/parking-areas/{{parking_area_id}}",
+              "protocol": "https",
+              "host": [
+                "db-project-spring2026-cartracking-0cax",
+                "onrender",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "parking-areas",
+                "{{parking_area_id}}"
+              ]
+            },
+            "description": "Update parking area by id"
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE /api/v1/parking-areas/{parking_area_id}",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "https://db-project-spring2026-cartracking-0cax.onrender.com/api/v1/parking-areas/{{parking_area_id}}",
+              "protocol": "https",
+              "host": [
+                "db-project-spring2026-cartracking-0cax",
+                "onrender",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "parking-areas",
+                "{{parking_area_id}}"
+              ]
+            },
+            "description": "Delete parking area by id"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Location Pings",
+      "item": [
+        {
+          "name": "POST /api/v1/location-pings",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"vehicle_id\": \"3\",\n  \"ts\": \"2026-03-14T09:58:20\",\n  \"geom\": {\n    \"type\": \"Point\",\n    \"coordinates\": [\n-67.1453,\n18.2011 ]\n  },\n  \"speed_kph\": 42.8,\n  \"heading_deg\": 185.4\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://db-project-spring2026-cartracking-0cax.onrender.com/api/v1/location-pings",
+              "protocol": "https",
+              "host": [
+                "db-project-spring2026-cartracking-0cax",
+                "onrender",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "location-pings"
+              ]
+            },
+            "description": "Generated from cURL: curl --request POST --url 'https://db-project-spring2026-cartracking-0cax.onrender.com/api/v1/location-pings' --header 'Content-Type: application/json' --data '{\n  \"vehicle_id\": 1,\n  \"latitude\": 18.4655,\n  \"longitude\": -66.1057,\n  \"recorded_at\": \"2026-03-14T10:00:00Z\"\n}'"
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/location-pings",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://db-project-spring2026-cartracking-0cax.onrender.com/api/v1/location-pings",
+              "protocol": "https",
+              "host": [
+                "db-project-spring2026-cartracking-0cax",
+                "onrender",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "location-pings"
+              ]
+            },
+            "description": "Generated from cURL: curl --request GET --url 'https://db-project-spring2026-cartracking-0cax.onrender.com/api/v1/location-pings'"
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/location-pings/{ping_id}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://db-project-spring2026-cartracking-0cax.onrender.com/api/v1/location-pings/{{ping_id}}",
+              "protocol": "https",
+              "host": [
+                "db-project-spring2026-cartracking-0cax",
+                "onrender",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "location-pings",
+                "{{ping_id}}"
+              ]
+            },
+            "description": "Generated from cURL: curl --request GET --url 'https://db-project-spring2026-cartracking-0cax.onrender.com/api/v1/location-pings/{{ping_id}}'"
+          },
+          "response": []
+        },
+        {
+          "name": "PUT /api/v1/location-pings/{ping_id}",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"speed_kph\": 45.1,\n  \"heading_deg\": 190.0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://db-project-spring2026-cartracking-0cax.onrender.com/api/v1/location-pings/{{ping_id}}",
+              "protocol": "https",
+              "host": [
+                "db-project-spring2026-cartracking-0cax",
+                "onrender",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "location-pings",
+                "{{ping_id}}"
+              ]
+            },
+            "description": "Generated from cURL: curl --request PUT --url 'https://db-project-spring2026-cartracking-0cax.onrender.com/api/v1/location-pings/{{ping_id}}' --header 'Content-Type: application/json' --data '{\n  \"vehicle_id\": 1,\n  \"latitude\": 18.4655,\n  \"longitude\": -66.1057,\n  \"recorded_at\": \"2026-03-14T10:00:00Z\"\n}'"
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE /api/v1/location-pings/{ping_id}",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "https://db-project-spring2026-cartracking-0cax.onrender.com/api/v1/location-pings/{{ping_id}}",
+              "protocol": "https",
+              "host": [
+                "db-project-spring2026-cartracking-0cax",
+                "onrender",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "location-pings",
+                "{{ping_id}}"
+              ]
+            },
+            "description": "Generated from cURL: curl --request DELETE --url 'https://db-project-spring2026-cartracking-0cax.onrender.com/api/v1/location-pings/{{ping_id}}'"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Trips",
+      "item": [
+        {
+          "name": "POST /api/v1/trips",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"vehicle_id\": 34,\n  \"start_ts\": \"2026-03-14T08:00:00Z\",\n  \"end_ts\": \"2026-03-14T08:45:00Z\",\n  \"start_geom\": {\n    \"type\": \"Point\",\n    \"coordinates\": [\n-67.15,\n18.205 ]\n  },\n  \"end_geom\": {\n    \"type\": \"Point\",\n    \"coordinates\": [\n-67.141,\n18.21 ]\n},\n  \"distance_km\": 6.7\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://db-project-spring2026-cartracking-0cax.onrender.com/api/v1/trips",
+              "protocol": "https",
+              "host": [
+                "db-project-spring2026-cartracking-0cax",
+                "onrender",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "trips"
+              ]
+            },
+            "description": "Create a new trip"
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/trips",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://db-project-spring2026-cartracking-0cax.onrender.com/api/v1/trips",
+              "protocol": "https",
+              "host": [
+                "db-project-spring2026-cartracking-0cax",
+                "onrender",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "trips"
+              ]
+            },
+            "description": "List trips"
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/trips/{trip_id}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://db-project-spring2026-cartracking-0cax.onrender.com/api/v1/trips/{{trip_id}}",
+              "protocol": "https",
+              "host": [
+                "db-project-spring2026-cartracking-0cax",
+                "onrender",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "trips",
+                "{{trip_id}}"
+              ]
+            },
+            "description": "Get trip by id"
+          },
+          "response": []
+        },
+        {
+          "name": "PUT /api/v1/trips/{trip_id}",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"end_ts\": \"2026-03-14T08:50:00Z\",\n  \"distance_km\": 7.1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://db-project-spring2026-cartracking-0cax.onrender.com/api/v1/trips/{{trip_id}}",
+              "protocol": "https",
+              "host": [
+                "db-project-spring2026-cartracking-0cax",
+                "onrender",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "trips",
+                "{{trip_id}}"
+              ]
+            },
+            "description": "Update trip by id"
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE /api/v1/trips/{trip_id}",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "https://db-project-spring2026-cartracking-0cax.onrender.com/api/v1/trips/{{trip_id}}",
+              "protocol": "https",
+              "host": [
+                "db-project-spring2026-cartracking-0cax",
+                "onrender",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "trips",
+                "{{trip_id}}"
+              ]
+            },
+            "description": "Delete trip by id"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "GET /api/v1/vehicles",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://db-project-spring2026-cartracking-0cax.onrender.com/api/v1/vehicles",
+          "protocol": "https",
+          "host": [
+            "db-project-spring2026-cartracking-0cax",
+            "onrender",
+            "com"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "vehicles"
+          ]
+        },
+        "description": "Connectivity test request for GET /api/v1/vehicles"
+      },
+      "response": []
+    }
+  ]
+}
