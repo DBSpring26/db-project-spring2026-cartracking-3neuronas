@@ -109,6 +109,58 @@ class ParkingAreaDAO:
             cursor.close()
             self.pool.putconn(conn)
 
+    def get_parking_areas_map(
+        self,
+        limit: int,
+        offset: int,
+        name: Optional[str],
+        bbox: Optional[tuple],
+    ) -> dict:
+        conn = self.pool.getconn()
+        cursor = conn.cursor(cursor_factory=DictCursor)
+        try:
+            where = []
+            params: list[Any] = []
+
+            if name is not None and name != "":
+                where.append("name ILIKE %s")
+                params.append(f"%{name}%")
+
+            if bbox is not None:
+                where.append(
+                    "ST_Intersects(geom, ST_MakeEnvelope(%s, %s, %s, %s, 4326))"
+                )
+                params.extend(list(bbox))
+
+            where_sql = ("WHERE " + " AND ".join(where)) if where else ""
+
+            cursor.execute(
+                f"""
+                SELECT parking_area_id, name, capacity,
+                       ST_AsGeoJSON(geom)::json AS geom, created_at
+                FROM parking_area
+                {where_sql}
+                ORDER BY parking_area_id
+                LIMIT %s OFFSET %s
+                """,
+                (*params, limit, offset),
+            )
+            items = [dict(r) for r in cursor.fetchall()]
+
+            cursor.execute(
+                f"SELECT COUNT(*) AS count FROM parking_area {where_sql}",
+                params,
+            )
+            count = int(cursor.fetchone()["count"])
+
+            return {"items": items, "limit": limit, "offset": offset, "count": count}
+        except psycopg2.Error:
+            conn.rollback()
+            raise
+        finally:
+            cursor.close()
+            self.pool.putconn(conn)
+
     def get_parking_area_by_id(self, parking_area_id: int) -> dict | None:
         conn = self.pool.getconn()
         cursor = conn.cursor(cursor_factory=DictCursor)

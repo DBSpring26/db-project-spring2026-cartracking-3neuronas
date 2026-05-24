@@ -74,6 +74,22 @@ class LocationPingHandler:
         except psycopg2.Error:
             raise HTTPException(status_code=400, detail="invalid geom")
 
+    def get_latest_pings(self, bbox: Optional[str]) -> dict:
+        parsed_bbox = None
+        if bbox:
+            try:
+                parts = [float(x) for x in bbox.split(",")]
+                if len(parts) != 4:
+                    raise ValueError
+                parsed_bbox = tuple(parts)
+            except ValueError:
+                raise HTTPException(
+                    status_code=400,
+                    detail="invalid bbox format, use minLon,minLat,maxLon,maxLat",
+                )
+        dao = LocationPingDAO()
+        return dao.get_latest_pings(parsed_bbox)
+
     def get_all_location_pings(self, limit, offset, vehicle_id, from_ts, to_ts, bbox):
         if limit < 0 or offset < 0:
             raise HTTPException(status_code=400, detail="limit and offset must be non-negative")

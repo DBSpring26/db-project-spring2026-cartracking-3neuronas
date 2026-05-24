@@ -121,3 +121,16 @@ class RoadSegmentHandler:
             raise HTTPException(status_code=404, detail="road segment not found")
         return {"message": "Road segment deleted successfully.", "road_id": road_id}
 
+    def get_road_segments_map(self, limit, offset, name, min_speed, max_speed, bbox_str):
+        parsed_bbox = None
+        if bbox_str:
+            try:
+                parts = [float(x) for x in bbox_str.split(",")]
+                if len(parts) != 4:
+                    raise ValueError
+                parsed_bbox = tuple(parts)
+            except ValueError:
+                raise HTTPException(status_code=400, detail="invalid bbox format")
+        dao = RoadSegmentDAO()
+        return dao.get_road_segments_map(limit, offset, name, min_speed, max_speed, parsed_bbox)
+

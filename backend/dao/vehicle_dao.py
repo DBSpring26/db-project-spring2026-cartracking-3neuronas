@@ -43,6 +43,49 @@ class VehicleDAO:
             **PG_DB_CONFIG,
         )
 
+    def get_breadcrumb(self, vehicle_id: int, from_ts: str, to_ts: str) -> dict | None:
+        conn = self.pool.getconn()
+        cursor = conn.cursor(cursor_factory=DictCursor)
+        try:
+            cursor.execute("SELECT 1 FROM vehicle WHERE vehicle_id = %s", (vehicle_id,))
+            if cursor.fetchone() is None:
+                return None
+            cursor.execute(
+                """
+                SELECT
+                    lp.ping_id,
+                    lp.ts,
+                    ST_AsGeoJSON(lp.geom)::json AS geom,
+                    lp.speed_kph,
+                    t.trip_id
+                FROM location_ping lp
+                LEFT JOIN trip t ON (
+                    t.vehicle_id = lp.vehicle_id
+                    AND lp.ts BETWEEN t.start_ts AND t.end_ts
+                )
+                WHERE lp.vehicle_id = %s
+                  AND lp.ts >= %s
+                  AND lp.ts <= %s
+                ORDER BY lp.ts ASC
+                """,
+                (vehicle_id, from_ts, to_ts),
+            )
+            rows = [dict(r) for r in cursor.fetchall()]
+            trip_ids = list(
+                dict.fromkeys(r["trip_id"] for r in rows if r["trip_id"] is not None)
+            )
+            return {
+                "vehicle_id": vehicle_id,
+                "trip_ids": trip_ids,
+                "pings": rows,
+            }
+        except psycopg2.Error:
+            conn.rollback()
+            raise
+        finally:
+            cursor.close()
+            self.pool.putconn(conn)
+
     def create_vehicle(self, data: VehicleCreate) -> dict | None:
         conn = self.pool.getconn()
         cursor = conn.cursor(cursor_factory=DictCursor)

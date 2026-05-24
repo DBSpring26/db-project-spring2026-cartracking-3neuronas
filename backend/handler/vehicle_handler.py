@@ -142,3 +142,12 @@ class VehicleHandler:
             raise HTTPException(status_code=404, detail="vehicle not found")
         return result
 
+    def get_breadcrumb(self, vehicle_id: int, from_ts: str, to_ts: str) -> dict:
+        if not from_ts or not to_ts:
+            raise HTTPException(status_code=400, detail="from_ts and to_ts are required")
+        dao = VehicleDAO()
+        result = dao.get_breadcrumb(vehicle_id, from_ts, to_ts)
+        if result is None:
+            raise HTTPException(status_code=404, detail="vehicle_id does not exist")
+        return result
+

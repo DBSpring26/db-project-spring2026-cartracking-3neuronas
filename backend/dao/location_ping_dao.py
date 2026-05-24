@@ -34,6 +34,44 @@ class LocationPingDAO:
             **PG_DB_CONFIG,
         )
 
+    def get_latest_pings(self, bbox: Optional[tuple] = None) -> dict:
+        conn = self.pool.getconn()
+        cursor = conn.cursor(cursor_factory=DictCursor)
+        try:
+            where = []
+            params: list[Any] = []
+            if bbox is not None:
+                where.append(
+                    "ST_Intersects(lp.geom, ST_MakeEnvelope(%s, %s, %s, %s, 4326))"
+                )
+                params.extend(list(bbox))
+            where_sql = ("WHERE " + " AND ".join(where)) if where else ""
+            cursor.execute(
+                f"""
+                SELECT DISTINCT ON (lp.vehicle_id)
+                    lp.ping_id,
+                    lp.vehicle_id,
+                    v.plate_number,
+                    lp.ts,
+                    ST_AsGeoJSON(lp.geom)::json AS geom,
+                    lp.speed_kph,
+                    lp.heading_deg
+                FROM location_ping lp
+                JOIN vehicle v ON v.vehicle_id = lp.vehicle_id
+                {where_sql}
+                ORDER BY lp.vehicle_id, lp.ts DESC
+                """,
+                params,
+            )
+            items = [dict(r) for r in cursor.fetchall()]
+            return {"items": items, "count": len(items)}
+        except psycopg2.Error:
+            conn.rollback()
+            raise
+        finally:
+            cursor.close()
+            self.pool.putconn(conn)
+
     def create_location_ping(self, data: LocationPingCreate) -> dict:
         conn = self.pool.getconn()
         cursor = conn.cursor(cursor_factory=DictCursor)

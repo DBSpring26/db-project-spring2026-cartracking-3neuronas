@@ -131,6 +131,68 @@ class RoadSegmentDAO:
             cursor.close()
             self.pool.putconn(conn)
 
+    def get_road_segments_map(
+        self,
+        limit: int,
+        offset: int,
+        name: Optional[str],
+        min_speed: Optional[int],
+        max_speed: Optional[int],
+        bbox: Optional[tuple],
+    ) -> dict:
+        conn = self.pool.getconn()
+        cursor = conn.cursor(cursor_factory=DictCursor)
+        try:
+            where = []
+            params: list[Any] = []
+
+            if name is not None and name != "":
+                where.append("name ILIKE %s")
+                params.append(f"%{name}%")
+
+            if min_speed is not None:
+                where.append("speed_limit_kph >= %s")
+                params.append(min_speed)
+
+            if max_speed is not None:
+                where.append("speed_limit_kph <= %s")
+                params.append(max_speed)
+
+            if bbox is not None:
+                where.append(
+                    "ST_Intersects(geom, ST_MakeEnvelope(%s, %s, %s, %s, 4326))"
+                )
+                params.extend(list(bbox))
+
+            where_sql = ("WHERE " + " AND ".join(where)) if where else ""
+
+            cursor.execute(
+                f"""
+                SELECT road_id, name, speed_limit_kph,
+                       ST_AsGeoJSON(geom)::json AS geom, created_at
+                FROM road_segment
+                {where_sql}
+                ORDER BY road_id
+                LIMIT %s OFFSET %s
+                """,
+                (*params, limit, offset),
+            )
+            items = [dict(r) for r in cursor.fetchall()]
+
+            cursor.execute(
+                f"SELECT COUNT(*) AS count FROM road_segment {where_sql}",
+                params,
+            )
+            count = int(cursor.fetchone()["count"])
+
+            return {"items": items, "limit": limit, "offset": offset, "count": count}
+        except psycopg2.Error:
+            conn.rollback()
+            raise
+        finally:
+            cursor.close()
+            self.pool.putconn(conn)
+
     def get_road_segment_by_id(self, road_id: int) -> dict | None:
         conn = self.pool.getconn()
         cursor = conn.cursor(cursor_factory=DictCursor)

@@ -107,3 +107,16 @@ class ParkingAreaHandler:
             raise HTTPException(status_code=404, detail="parking area not found")
         return {"message": "Parking area deleted successfully.", "parking_area_id": parking_area_id}
 
+    def get_parking_areas_map(self, limit, offset, name, bbox_str):
+        parsed_bbox = None
+        if bbox_str:
+            try:
+                parts = [float(x) for x in bbox_str.split(",")]
+                if len(parts) != 4:
+                    raise ValueError
+                parsed_bbox = tuple(parts)
+            except ValueError:
+                raise HTTPException(status_code=400, detail="invalid bbox format")
+        dao = ParkingAreaDAO()
+        return dao.get_parking_areas_map(limit, offset, name, parsed_bbox)
+

@@ -6,6 +6,7 @@ Thin endpoints: instantiate handlers, delegate business logic and HTTPException 
 
 from __future__ import annotations
 
+from contextlib import asynccontextmanager
 from typing import Literal, Optional
 
 from fastapi import FastAPI, HTTPException, Request
@@ -17,7 +18,9 @@ from pydantic import BaseModel, ConfigDict, Field
 from .handler.location_ping_handler import LocationPingHandler
 from .handler.parking_area_handler import ParkingAreaHandler
 from .handler.road_segment_handler import RoadSegmentHandler
+from .handler.stats_handler import StatsHandler
 from .handler.trip_handler import TripHandler
+from .handler.user_handler import UserHandler
 from .handler.vehicle_handler import VehicleHandler
 
 # ---------------------------------------------------------------------------
@@ -146,11 +149,53 @@ class TripUpdate(BaseModel):
     distance_km: Optional[float] = None
 
 
+class UserCreate(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    username: str
+    email: str
+    password: str
+
+
+class UserLogin(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    username: str
+    password: str
+
+
 # ---------------------------------------------------------------------------
 # App + CORS
 # ---------------------------------------------------------------------------
 
-app = FastAPI(title="Car Tracking API", version="1.0.0")
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    _create_app_user_table()
+    yield
+
+
+def _create_app_user_table():
+    from .config.dbconfig import PG_DB_CONFIG
+    import psycopg2
+
+    conn = psycopg2.connect(**PG_DB_CONFIG)
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                CREATE TABLE IF NOT EXISTS app_user (
+                    user_id SERIAL PRIMARY KEY,
+                    username TEXT UNIQUE NOT NULL,
+                    email TEXT UNIQUE NOT NULL,
+                    password_hash TEXT NOT NULL,
+                    created_at TIMESTAMP DEFAULT NOW()
+                );
+                """
+            )
+        conn.commit()
+    finally:
+        conn.close()
+
+
+app = FastAPI(title="Car Tracking API", version="1.0.0", lifespan=lifespan)
 
 @app.exception_handler(HTTPException)
 async def http_exception_handler(request: Request, exc: HTTPException):
@@ -257,6 +302,18 @@ async def get_road_segments(
     )
 
 
+@app.get("/api/v1/road-segments/map")
+async def get_road_segments_map(
+    limit: int = 5000,
+    offset: int = 0,
+    name: Optional[str] = None,
+    min_speed: Optional[int] = None,
+    max_speed: Optional[int] = None,
+    bbox: Optional[str] = None,
+):
+    return RoadSegmentHandler().get_road_segments_map(limit, offset, name, min_speed, max_speed, bbox)
+
+
 @app.get("/api/v1/road-segments/{road_id}")
 async def get_road_segment(road_id: int):
     return RoadSegmentHandler().get_road_segment_by_id(road_id)
@@ -290,6 +347,16 @@ async def get_parking_areas(
     bbox: Optional[str] = None,
 ):
     return ParkingAreaHandler().get_all_parking_areas(limit, offset, name, bbox)
+
+
+@app.get("/api/v1/parking-areas/map")
+async def get_parking_areas_map(
+    limit: int = 300,
+    offset: int = 0,
+    name: Optional[str] = None,
+    bbox: Optional[str] = None,
+):
+    return ParkingAreaHandler().get_parking_areas_map(limit, offset, name, bbox)
 
 
 @app.get("/api/v1/parking-areas/{parking_area_id}")
@@ -329,6 +396,12 @@ async def get_location_pings(
     return LocationPingHandler().get_all_location_pings(
         limit, offset, vehicle_id, from_ts, to_ts, bbox
     )
+
+
+# Latest pings
+@app.get("/api/v1/location-pings/latest")
+async def get_latest_pings(bbox: Optional[str] = None):
+    return LocationPingHandler().get_latest_pings(bbox)
 
 
 @app.get("/api/v1/location-pings/{ping_id}")
@@ -380,3 +453,29 @@ async def update_trip(trip_id: int, body: TripUpdate):
 @app.delete("/api/v1/trips/{trip_id}")
 async def delete_trip(trip_id: int):
     return TripHandler().delete_trip(trip_id)
+
+
+# Users
+@app.post("/api/v1/users/signup", status_code=201)
+async def signup(body: UserCreate):
+    return UserHandler().signup(body)
+
+
+@app.post("/api/v1/users/login")
+async def login(body: UserLogin):
+    return UserHandler().login(body)
+
+
+# Breadcrumb
+@app.get("/api/v1/vehicles/{vehicle_id}/breadcrumb")
+async def get_breadcrumb(vehicle_id: int, from_ts: str, to_ts: str):
+    return VehicleHandler().get_breadcrumb(vehicle_id, from_ts, to_ts)
+
+
+# Stats
+@app.get("/api/v1/stats/pings-per-day")
+async def get_pings_per_day(
+    from_ts: Optional[str] = None,
+    to_ts: Optional[str] = None,
+):
+    return StatsHandler().get_pings_per_day(from_ts, to_ts)
