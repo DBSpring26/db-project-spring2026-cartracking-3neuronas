@@ -58,6 +58,6 @@ if st.session_state.get("breadcrumb_result"):
         m = build_breadcrumb_map(pings)
         st_folium(m, width=None, height=520)
         df = pd.DataFrame(pings)
-        st.dataframe(df, use_container_width=True)
+        st.dataframe(df, width='stretch')
     else:
         st.warning("No pings found for this vehicle in the selected time range.")

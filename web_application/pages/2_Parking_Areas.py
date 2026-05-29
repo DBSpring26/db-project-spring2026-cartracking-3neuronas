@@ -30,10 +30,10 @@ with st.sidebar:
     max_lat = st.number_input("maxLat", value=default_max_lat, format="%.6f", key="parking_max_lat")
     col_apply, col_reset = st.columns(2)
     with col_apply:
-        if st.button("Apply", use_container_width=True):
+        if st.button("Apply", width='stretch'):
             st.session_state["bbox_parking"] = format_bbox((min_lon, min_lat, max_lon, max_lat))
     with col_reset:
-        if st.button("Reset", use_container_width=True):
+        if st.button("Reset", width='stretch'):
             st.session_state["bbox_parking"] = None
             st.session_state["new_parking_geom"] = None
             st.session_state["selected_parking_id"] = None
@@ -65,7 +65,7 @@ df = pd.DataFrame(items)
 cols = ["parking_area_id", "name", "capacity", "created_at"]
 if not df.empty:
     df = df[[c for c in cols if c in df.columns]]
-st.dataframe(df, use_container_width=True)
+st.dataframe(df, width='stretch')
 
 st.divider()
 
@@ -77,7 +77,7 @@ if st.session_state.get("new_parking_geom"):
     with st.form("create_parking_form"):
         name = st.text_input("Name", placeholder="e.g. UPRM West Lot")
         capacity = st.number_input("Capacity", min_value=0, value=0)
-        submitted = st.form_submit_button("Create Parking Area", use_container_width=True)
+        submitted = st.form_submit_button("Create Parking Area", width='stretch')
         if submitted:
             if not name.strip():
                 st.error("Name is required.")
@@ -113,7 +113,7 @@ else:
         with st.form("update_parking_form"):
             new_name = st.text_input("Name", value=selected.get("name") or "")
             new_capacity = st.number_input("Capacity", min_value=0, value=selected.get("capacity") or 0)
-            update_submitted = st.form_submit_button("Update Parking Area", use_container_width=True)
+            update_submitted = st.form_submit_button("Update Parking Area", width='stretch')
             if update_submitted:
                 payload = {}
                 if new_name.strip():
@@ -130,7 +130,7 @@ else:
 
     with tab_delete:
         st.warning(f"You are about to delete '{selected.get('name')}' (ID={selected_id}). This cannot be undone.")
-        if st.button("Confirm Delete", use_container_width=True, type="primary"):
+        if st.button("Confirm Delete", width='stretch', type="primary"):
             result = APIClient().delete_parking_area(selected_id)
             if result:
                 st.success(f"Parking area ID {selected_id} deleted successfully!")

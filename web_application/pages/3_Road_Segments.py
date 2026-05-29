@@ -26,10 +26,10 @@ with st.sidebar:
     max_lat = st.number_input("maxLat", value=default_max_lat, format="%.6f", key="roads_max_lat")
     col_apply, col_reset = st.columns(2)
     with col_apply:
-        if st.button("Apply", use_container_width=True):
+        if st.button("Apply", width='stretch'):
             st.session_state["bbox_roads"] = format_bbox((min_lon, min_lat, max_lon, max_lat))
     with col_reset:
-        if st.button("Reset", use_container_width=True):
+        if st.button("Reset", width='stretch'):
             st.session_state["bbox_roads"] = None
             for key in ["roads_min_lon", "roads_min_lat", "roads_max_lon", "roads_max_lat"]:
                 if key in st.session_state:
@@ -53,7 +53,7 @@ df = pd.DataFrame(items)
 cols = ["road_id", "name", "speed_limit_kph", "created_at"]
 if not df.empty:
     df = df[[c for c in cols if c in df.columns]]
-st.dataframe(df, use_container_width=True)
+st.dataframe(df, width='stretch')
 
 st.divider()
 st.subheader("Add New Road Segment")
@@ -68,7 +68,7 @@ with st.form("create_road_form"):
         placeholder="-67.1601, 18.211\n-67.1588, 18.2101\n-67.1573, 18.2092",
         height=120,
     )
-    submitted = st.form_submit_button("Create Road Segment", use_container_width=True)
+    submitted = st.form_submit_button("Create Road Segment", width='stretch')
     if submitted:
         if not name.strip():
             st.error("Name is required.")
@@ -114,7 +114,7 @@ else:
         with st.form("update_road_form"):
             new_name = st.text_input("Name", value=selected.get("name") or "")
             new_speed = st.number_input("Speed limit (kph)", min_value=0, value=selected.get("speed_limit_kph") or 0)
-            update_submitted = st.form_submit_button("Update Road Segment", use_container_width=True)
+            update_submitted = st.form_submit_button("Update Road Segment", width='stretch')
             if update_submitted:
                 payload = {}
                 if new_name.strip():
@@ -131,7 +131,7 @@ else:
 
     with tab_delete:
         st.warning(f"You are about to delete '{selected.get('name')}' (ID={selected_id}). This cannot be undone.")
-        if st.button("Confirm Delete", use_container_width=True, type="primary"):
+        if st.button("Confirm Delete", width='stretch', type="primary"):
             result = APIClient().delete_road_segment(selected_id)
             if result:
                 st.success(f"Road segment ID {selected_id} deleted successfully!")
