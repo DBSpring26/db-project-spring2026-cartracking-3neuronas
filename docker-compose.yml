@@ -10,11 +10,13 @@ services:
       POSTGRES_DB: car_tracking
     ports:
       - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
   api:
     build:
-      context: ./backend
-      dockerfile: Dockerfile.api
+      context: .
+      dockerfile: backend/Dockerfile.api
     container_name: cartracking-api
     depends_on:
       - postgres
@@ -26,3 +28,20 @@ services:
       DB_USER: admin
       DB_PASSWORD: root
       DB_PORT: 5432
+
+  web:
+    build:
+      context: ./web_application
+      dockerfile: Dockerfile.web
+    container_name: cartracking-web
+    depends_on:
+      - api
+    ports:
+      - "8501:8501"
+    environment:
+      API_BASE_URL: http://api:8000/api/v1
+
+volumes:
+  postgres_data:
+
+      

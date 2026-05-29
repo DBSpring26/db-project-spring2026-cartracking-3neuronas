@@ -75,18 +75,7 @@ class LocationPingHandler:
             raise HTTPException(status_code=400, detail="invalid geom")
 
     def get_latest_pings(self, bbox: Optional[str]) -> dict:
-        parsed_bbox = None
-        if bbox:
-            try:
-                parts = [float(x) for x in bbox.split(",")]
-                if len(parts) != 4:
-                    raise ValueError
-                parsed_bbox = tuple(parts)
-            except ValueError:
-                raise HTTPException(
-                    status_code=400,
-                    detail="invalid bbox format, use minLon,minLat,maxLon,maxLat",
-                )
+        parsed_bbox = _parse_bbox(bbox)
         dao = LocationPingDAO()
         return dao.get_latest_pings(parsed_bbox)
 
