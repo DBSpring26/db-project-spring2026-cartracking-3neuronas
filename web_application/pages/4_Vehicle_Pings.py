@@ -26,10 +26,10 @@ with st.sidebar:
     max_lat = st.number_input("maxLat", value=default_max_lat, format="%.6f", key="pings_max_lat")
     col_apply, col_reset = st.columns(2)
     with col_apply:
-        if st.button("Apply", use_container_width=True):
+        if st.button("Apply", width='stretch'):
             st.session_state["bbox_pings"] = format_bbox((min_lon, min_lat, max_lon, max_lat))
     with col_reset:
-        if st.button("Reset", use_container_width=True):
+        if st.button("Reset", width='stretch'):
             st.session_state["bbox_pings"] = None
             for key in ["pings_min_lon", "pings_min_lat", "pings_max_lon", "pings_max_lat"]:
                 if key in st.session_state:
@@ -52,7 +52,7 @@ df = pd.DataFrame(items)
 cols = ["ping_id", "vehicle_id", "plate_number", "ts", "speed_kph", "heading_deg"]
 if not df.empty:
     df = df[[c for c in cols if c in df.columns]]
-st.dataframe(df, use_container_width=True)
+st.dataframe(df, width='stretch')
 
 st.divider()
 
@@ -68,7 +68,7 @@ with st.form("create_ping_form"):
         lon = st.number_input("Longitude", value=-67.1453, format="%.6f")
         lat = st.number_input("Latitude", value=18.2011, format="%.6f")
         heading_deg = st.number_input("Heading (deg)", min_value=0.0, max_value=359.9, value=0.0)
-    create_submitted = st.form_submit_button("Create Ping", use_container_width=True)
+    create_submitted = st.form_submit_button("Create Ping", width='stretch')
     if create_submitted:
         if not ts.strip():
             st.error("Timestamp is required.")
@@ -108,7 +108,7 @@ else:
         with st.form("update_ping_form"):
             new_speed = st.number_input("Speed (kph)", min_value=0.0, value=float(selected.get("speed_kph") or 0))
             new_heading = st.number_input("Heading (deg)", min_value=0.0, max_value=359.9, value=float(selected.get("heading_deg") or 0))
-            update_submitted = st.form_submit_button("Update Ping", use_container_width=True)
+            update_submitted = st.form_submit_button("Update Ping", width='stretch')
             if update_submitted:
                 payload = {
                     "speed_kph": new_speed,
@@ -121,7 +121,7 @@ else:
 
     with tab_delete:
         st.warning(f"You are about to delete Ping ID {selected_id}. This cannot be undone.")
-        if st.button("Confirm Delete", use_container_width=True, type="primary"):
+        if st.button("Confirm Delete", width='stretch', type="primary"):
             result = APIClient().delete_location_ping(selected_id)
             if result:
                 st.success(f"Ping ID {selected_id} deleted successfully!")

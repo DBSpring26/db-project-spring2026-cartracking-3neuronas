@@ -34,4 +34,4 @@ if df.empty:
     st.stop()
 
 fig = px.bar(df, x="day", y="count", title="Location Pings per Day")
-st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(fig, width='stretch')
