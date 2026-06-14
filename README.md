@@ -10,11 +10,44 @@
 | Roberto Galarza | Backend Layer | `backend/` |
 | Christian Perez | Services & Utils Layer | `web_application/services/`, `web_application/utils/` |
 
+## Environment setup
+
+Copy `.env.example` to `.env` and fill in values. Required for Docker Compose, local runs, ETL (Render), and the AI Assistant (`CURSOR_API_KEY`).
+
+## AI Assistant
+
+In-app chat ( **AI Assistant** page) that answers fleet questions using live API data.
+
+### Features
+- Natural-language queries about vehicles, trips, pings, parking areas, road segments, and statistics.
+- Answers only Car Tracking project topics; refuses out-of-scope questions.
+- Keeps conversation context via the agent (`Agent.resume`) until **Clear conversation** is clicked in the sidebar.
+
+### Configuration (`.env`)
+| Variable | Description |
+|----------|-------------|
+| `CURSOR_API_KEY` | Cursor API key (required to use the assistant) |
+| `CURSOR_AGENT_RUNTIME` | `local` (default) or `cloud` |
+| `API_BASE_URL` | Internal API URL (Docker/local) |
+| `PUBLIC_API_BASE_URL` | Public API URL (Render) for cloud runtime |
+
+In Docker Compose, the `web` service receives `CURSOR_API_KEY` and `CURSOR_AGENT_RUNTIME` from `.env`.
+
+### Architecture
+- **`web_application/pages/7_AI_Assistant.py`** — Streamlit chat UI (login required).
+- **`web_application/services/ai_client.py`** — Cursor SDK agent orchestration (`composer-2.5`), scope validation, and prompts.
+- **`web_application/services/fleet_mcp_server.py`** — Stdio MCP server exposing REST API tools.
+- **`web_application/services/fleet_tools.py`** — GET request execution against the API.
+
+**Local runtime:** local agent + MCP `fleet-api` pointing to `API_BASE_URL`.  
+**Cloud runtime:** cloud agent + MCP using `PUBLIC_API_BASE_URL`.
+
 ## Database Credentials (Render)
-- **Host:** `dpg-d6rbqdkr85hc73a2ovng-a.virginia-postgres.render.com`
-- **Database:** `dbproject_y601`
-- **User:** `neurona1`
-- **Password:** `YGS3uNZ247ukda0t9RLZ4AGrKYyjPOeq`
+
+Configure production database access via environment variables. Copy `.env.example` to `.env` and set `DB_HOST`, `DB_NAME`, `DB_USER`, and `DB_PASSWORD` (used by the ETL pipeline).
+
+- **Host:** see `DB_HOST` in your `.env`
+- **Database / User / Password:** see `.env`
 - **Port:** `5432`
 
 ## API Base URL
@@ -110,6 +143,8 @@ All endpoints are prefixed with `/api/v1`
 - **Charts:** Plotly
 - **HTTP Client:** requests
 - **Data:** pandas
+- **AI Assistant:** Cursor SDK + MCP (`cursor-sdk`, `mcp`)
+- **Env:** python-dotenv
 
 ### ETL
 - **Pipeline:** Python (extract / transform / load)
