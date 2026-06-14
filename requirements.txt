@@ -6,3 +6,4 @@ pandas
 pyarrow
 tqdm
 bcrypt
+python-dotenv

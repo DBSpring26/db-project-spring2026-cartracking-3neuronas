@@ -4,10 +4,12 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: cartracking-postgres
+    env_file:
+      - .env
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: root
-      POSTGRES_DB: car_tracking
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - "5432:5432"
     volumes:
@@ -20,14 +22,16 @@ services:
     container_name: cartracking-api
     depends_on:
       - postgres
+    env_file:
+      - .env
     ports:
       - "8000:8000"
     environment:
-      DB_HOST: postgres
-      DB_NAME: car_tracking
-      DB_USER: admin
-      DB_PASSWORD: root
-      DB_PORT: 5432
+      DB_HOST: ${DB_HOST}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_PORT: ${DB_PORT}
 
   web:
     build:
@@ -36,12 +40,15 @@ services:
     container_name: cartracking-web
     depends_on:
       - api
+    env_file:
+      - .env
     ports:
       - "8501:8501"
     environment:
-      API_BASE_URL: http://api:8000/api/v1
+      API_BASE_URL: ${API_BASE_URL}
+      PUBLIC_API_BASE_URL: ${PUBLIC_API_BASE_URL}
+      CURSOR_API_KEY: ${CURSOR_API_KEY}
+      CURSOR_AGENT_RUNTIME: ${CURSOR_AGENT_RUNTIME:-local}
 
 volumes:
   postgres_data:
-
-      
