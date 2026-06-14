@@ -1,0 +1,11 @@
+{
+  "venvPath": "web_application",
+  "venv": ".venv",
+  "include": ["web_application"],
+  "executionEnvironments": [
+    {
+      "root": "web_application",
+      "extraPaths": ["web_application"]
+    }
+  ]
+}
