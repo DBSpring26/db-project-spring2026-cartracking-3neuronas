@@ -4,11 +4,18 @@
 
 ## Team Members & Contributions
 
-| Member | Role | Responsibility |
-|--------|------|---------------|
-| Jorge Burgos | Pages Layer | `web_application/pages/` |
-| Roberto Galarza | Backend Layer | `backend/` |
-| Christian Perez | Services & Utils Layer | `web_application/services/`, `web_application/utils/` |
+### Jorge Burgos — Frontend & Data Visualization
+- **Frontend & Data Visualization:** Streamlit pages (Signup, Parking Areas, Road Segments, Vehicle Pings, Breadcrumbs, Dashboards); JSON-to-UI tables; map utilities and bbox tracking.
+- **Shared with the team:** ETL pipeline and backend architecture (Handlers and DAOs).
+- **Solo, later addition (not part of the original project scope):** the conversational AI Assistant.
+
+### Christian Perez — DevOps & Core Architecture
+- DevOps & core architecture (`app.py` / session / API client, Docker, Render deploy), plus shared ETL/backend.
+
+### Roberto Galarza — API Design & QA
+- API design & QA (Postman, route testing, endpoint contracts), plus shared ETL/backend.
+
+> The 28-endpoint REST API, FastAPI, and ETL pipeline were built collaboratively by the whole team.
 
 ## Environment setup
 
